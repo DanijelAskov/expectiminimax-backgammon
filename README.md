@@ -4,7 +4,7 @@
 
 ## Short application description
 
-A 2D JavaFX implementation of one of the most popular and old board games.
+A 2D JavaFX implementation of one of the most popular and oldest board games.
 Two game modes are supported:
 * Human vs Human
 * Human vs Computer (i.e. AI player)
