@@ -9,7 +9,7 @@ Two game modes are supported:
 * Human vs Human
 * Human vs Computer (i.e. AI player)
 
-AI player's moves are determined using the [**expectiminimax algorithm**](https://en.wikipedia.org/wiki/Expectiminimax?oldformat=true).
+The AI player's moves are determined using the [**expectiminimax algorithm**](https://en.wikipedia.org/wiki/Expectiminimax?oldformat=true).
 
 ## Tools used for development
 
