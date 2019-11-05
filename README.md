@@ -14,7 +14,7 @@ The AI player's moves are determined using the [**expectiminimax algorithm**](ht
 ## Setup
 
 This project uses [Gradle](https://docs.gradle.org/current/userguide/userguide.html).
-Open command-line interpreter and simply run `gradlew run` (Windows) or `./gradlew run` (macOS and Linux) to download the Gradle wrapper and dependencies, compile the code, and launch the application.
+Open command-line interpreter and simply run `gradlew run` (Windows) or `./gradlew run` (macOS and Linux) to launch the application.
 
 ## Note to the reader of this README
 
