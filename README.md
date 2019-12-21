@@ -19,3 +19,4 @@ Open command-line interpreter and simply run `gradlew run` (Windows) or `./gradl
 ## Note to the reader of this README
 
 If you have any question, suggestion or collaboration offer, please feel free to [contact me](mailto:danijel.askov@gmail.com).
+**If you find this repository useful, please consider starring it!**
