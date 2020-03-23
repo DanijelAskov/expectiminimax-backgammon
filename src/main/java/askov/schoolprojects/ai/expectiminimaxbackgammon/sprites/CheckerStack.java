@@ -28,7 +28,7 @@ import javafx.scene.shape.Shape;
  */
 public abstract class CheckerStack extends Sprite {
     
-    protected Shape background;
+    protected Shape backgroundTriangle;
     protected final Stack<Checker> checkers = new Stack<>();
     
     public void pushChecker(Checker checker) {

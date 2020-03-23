@@ -19,11 +19,9 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon.sprites;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.Animation;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.DashedCircleAnimation;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.ScalingAnimation;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -31,7 +29,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
-import javafx.util.Duration;
 
 /**
  * @author Danijel Askov
@@ -78,9 +75,10 @@ public class Checker extends Sprite {
     private final CheckerColor checkerColor;
     private final Circle outerCircle;
 
-    private final Shape x;
+    private final Shape crossedLinesMarker;
 
-    private ScaleTransition blotAnimation;
+    private Animation animationMarked;
+    private Animation animationSelected;
 
     public Checker(double size, CheckerColor checkerColor) {
         this.checkerColor = checkerColor;
@@ -96,17 +94,21 @@ public class Checker extends Sprite {
 
         super.getChildren().setAll(outerCircle, innerCircle);
 
+        animationSelected = new DashedCircleAnimation(this, 1.2 * outerCircle.getRadius());
+
         double r = innerCircle.getRadius();
-        Line l1 = new Line(-0.50 * r, -0.50 * r, 0.50 * r, 0.50 * r);
-        l1.setStrokeWidth(0.40 * r);
+        Line line1 = new Line(-0.50 * r, -0.50 * r, 0.50 * r, 0.50 * r);
+        line1.setStrokeWidth(0.40 * r);
 
-        Line l2 = new Line(-0.50 * r, 0.50 * r, 0.50 * r, -0.50 * r);
-        l2.setStrokeWidth(0.40 * r);
+        Line line2 = new Line(-0.50 * r, 0.50 * r, 0.50 * r, -0.50 * r);
+        line2.setStrokeWidth(0.40 * r);
 
-        x = Shape.union(l1, l2);
-        x.setStroke(Color.DARKRED);
-        x.setFill(Color.RED);
-        x.setOpacity(0.5);
+        crossedLinesMarker = Shape.union(line1, line2);
+        crossedLinesMarker.setStroke(Color.DARKRED);
+        crossedLinesMarker.setFill(Color.RED);
+        crossedLinesMarker.setOpacity(0.5);
+
+        animationMarked = new ScalingAnimation(crossedLinesMarker);
     }
 
     public double getSize() {
@@ -117,58 +119,17 @@ public class Checker extends Sprite {
         return checkerColor;
     }
 
-    private Timeline selectedAnimation;
-
     public void animateSelected(boolean selected) {
-        if (selected) {
-            if (selectedAnimation == null) {
-                selectedAnimation = new Timeline();
-
-                KeyValue startStrokeWidthKeyValue = new KeyValue(outerCircle.strokeWidthProperty(), 0);
-                KeyValue startStrokeColorKeyValue = new KeyValue(outerCircle.strokeProperty(), Color.BLACK);
-                KeyFrame startKeyFrame = new KeyFrame(Duration.seconds(0), startStrokeWidthKeyValue, startStrokeColorKeyValue);
-
-                KeyValue endStrokeWidthKeyValue = new KeyValue(outerCircle.strokeWidthProperty(), 4);
-                KeyValue endStrokeColorKeyValue = new KeyValue(outerCircle.strokeProperty(), Color.YELLOW);
-                KeyFrame endKeyFrame = new KeyFrame(Duration.seconds(0.40), endStrokeColorKeyValue, endStrokeWidthKeyValue);
-
-                selectedAnimation.getKeyFrames().addAll(startKeyFrame, endKeyFrame);
-
-                selectedAnimation.setAutoReverse(true);
-                selectedAnimation.setCycleCount(Animation.INDEFINITE);
-            }
-
-            selectedAnimation.play();
-        } else {
-            if (selectedAnimation != null && selectedAnimation.getStatus() == Animation.Status.RUNNING) {
-                selectedAnimation.stop();
-            }
-            outerCircle.setStrokeWidth(0);
-            outerCircle.setStroke(Color.BLACK);
-        }
+        if (selected) animationSelected.start(); else animationSelected.stop();
     }
 
     public void animateBlot(boolean isBlot) {
-        if (blotAnimation != null) {
-            blotAnimation.stop();
-        }
-
         if (isBlot) {
-            if (blotAnimation == null) {
-                blotAnimation = new ScaleTransition(Duration.seconds(0.40), x);
-                blotAnimation.setFromX(1);
-                blotAnimation.setToX(1.5);
-                blotAnimation.setFromY(1);
-                blotAnimation.setToY(1.5);
-                blotAnimation.setAutoReverse(true);
-                blotAnimation.setCycleCount(Animation.INDEFINITE);
-            }
-            if (!getChildren().contains(x)) {
-                getChildren().add(x);
-            }
-            blotAnimation.play();
+            if (!getChildren().contains(crossedLinesMarker)) getChildren().add(crossedLinesMarker);
+            animationMarked.start();
         } else {
-            getChildren().remove(x);
+            animationMarked.stop();
+            getChildren().remove(crossedLinesMarker);
         }
     }
 

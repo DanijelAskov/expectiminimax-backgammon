@@ -1,4 +1,4 @@
-# ExpectiminimaxBackgammon
+# Expectiminimax Backgammon
 
 ![Gameplay demonstration](demo/gameplay.gif)
 

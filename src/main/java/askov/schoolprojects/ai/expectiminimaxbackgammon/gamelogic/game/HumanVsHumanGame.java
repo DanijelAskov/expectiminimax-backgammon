@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 
@@ -53,6 +54,24 @@ public class HumanVsHumanGame extends Game {
         super(boardWidth, boardHeight, new HumanPlayer(Checker.CheckerColor.WHITE), new HumanPlayer(Checker.CheckerColor.BLACK));
 
         for (Checker checker : checkers) {
+            checker.setOnMouseEntered(mouseEvent -> {
+                boolean checkerIsMovable = false;
+                if (checker.getCheckerColor() == currentPlayer.getCheckerColor()) {
+                    if (getBoard().getBar(checker.getCheckerColor()).isEmpty()) {
+                        List<Move> possibleMovesForCurrentPlayer = currentPlayer.getPossibleMoves();
+                        for (Move move : possibleMovesForCurrentPlayer) {
+                            for (CheckerRelocation checkerRelocation : move.getCheckerRelocations()) {
+                                if (checkerRelocation.getSourceCheckerStack().peekChecker() == checker) {
+                                    checkerIsMovable = true;
+                                    break;
+                                }
+                            }
+                            if (checkerIsMovable) break;
+                        }
+                    } else checkerIsMovable = getBoard().getBar(checker.getCheckerColor()).peekChecker() == checker;
+                }
+                checker.setCursor(checkerIsMovable ? Cursor.HAND : Cursor.DEFAULT);
+            });
             checker.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
@@ -137,6 +156,22 @@ public class HumanVsHumanGame extends Game {
         for (int i = 1; i <= Board.NUM_POINTS; i++) {
             try {
                 CheckerStack checkerStack = board.getCheckerStack(Checker.CheckerColor.WHITE, i);
+                checkerStack.setOnMouseEntered(mouseEvent -> {
+                    boolean checkerStackIsPossibleDestination = false;
+                    if (pickedUpChecker != null && destinationCheckerStacks.contains(checkerStack)) {
+                        List<Move> possibleMovesForCurrentPlayer = currentPlayer.getPossibleMoves();
+                        for (Move move : possibleMovesForCurrentPlayer) {
+                            for (CheckerRelocation checkerRelocation : move.getCheckerRelocations()) {
+                                if (checkerRelocation.getSourceCheckerStack().peekChecker() == pickedUpChecker && checkerRelocation.getDestinationCheckerStack() == checkerStack) {
+                                    checkerStackIsPossibleDestination = true;
+                                    break;
+                                }
+                            }
+                            if (checkerStackIsPossibleDestination) break;
+                        }
+                    }
+                    checkerStack.setCursor(checkerStackIsPossibleDestination ? Cursor.HAND : Cursor.DEFAULT);
+                });
                 checkerStack.setOnMouseClicked(new CheckerStackClickedHandler(checkerStack));
             } catch (CheckerStackIndexOutOfBoundsException ex) {
                 Logger.getLogger(ExpectiminimaxBackgammon.class.getName()).log(Level.SEVERE, null, ex);

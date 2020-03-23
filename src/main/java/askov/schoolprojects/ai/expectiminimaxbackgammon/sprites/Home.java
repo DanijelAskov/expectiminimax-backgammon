@@ -50,10 +50,10 @@ public class Home extends CheckerStack {
     private Timeline animation;
 
     public Home(double width, double height, StackingDirection direction) {
-        background = new Rectangle(this.width = width, this.height = height);
-        background.setFill(Board.BOARD_FILL.brighter());
-        background.setStroke(Color.BLACK);
-        background.setStrokeWidth(1);
+        backgroundTriangle = new Rectangle(this.width = width, this.height = height);
+        backgroundTriangle.setFill(Board.BOARD_FILL.brighter());
+        backgroundTriangle.setStroke(Color.BLACK);
+        backgroundTriangle.setStrokeWidth(1);
         this.direction = direction;
     }
 
@@ -65,12 +65,12 @@ public class Home extends CheckerStack {
             if (animation == null) {
                 animation = new Timeline();         
                
-                KeyValue startStrokeWidthKeyValue = new KeyValue(background.strokeWidthProperty(), 0);
-                KeyValue startStrokeColorKeyValue = new KeyValue(background.strokeProperty(), Color.BLACK);
+                KeyValue startStrokeWidthKeyValue = new KeyValue(backgroundTriangle.strokeWidthProperty(), 0);
+                KeyValue startStrokeColorKeyValue = new KeyValue(backgroundTriangle.strokeProperty(), Color.BLACK);
                 KeyFrame startKeyFrame = new KeyFrame(Duration.seconds(0), startStrokeWidthKeyValue, startStrokeColorKeyValue);
 
-                KeyValue endStrokeWidthKeyValue = new KeyValue(background.strokeWidthProperty(), 4);
-                KeyValue endStrokeColorKeyValue = new KeyValue(background.strokeProperty(), Color.YELLOW);
+                KeyValue endStrokeWidthKeyValue = new KeyValue(backgroundTriangle.strokeWidthProperty(), 4);
+                KeyValue endStrokeColorKeyValue = new KeyValue(backgroundTriangle.strokeProperty(), Color.YELLOW);
                 KeyFrame endKeyFrame = new KeyFrame(Duration.seconds(0.40), endStrokeColorKeyValue, endStrokeWidthKeyValue);
 
                 animation.getKeyFrames().addAll(startKeyFrame, endKeyFrame);
@@ -81,15 +81,15 @@ public class Home extends CheckerStack {
             
             animation.play();
         } else { 
-            background.setStrokeWidth(1);
-            background.setStroke(Color.BLACK);
+            backgroundTriangle.setStrokeWidth(1);
+            backgroundTriangle.setStroke(Color.BLACK);
         }
     }
 
     @Override
     public void update() {
         super.getChildren().clear();
-        super.getChildren().add(background);
+        super.getChildren().add(backgroundTriangle);
         int i = 0;
         for (Checker checker : checkers) {
             Rectangle rectangle = new Rectangle(width - 4, (1. / 15) * height, LIN_GRAD[checker.getCheckerColor().getValue()]);
