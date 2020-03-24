@@ -94,7 +94,7 @@ public class Checker extends Sprite {
 
         super.getChildren().setAll(outerCircle, innerCircle);
 
-        animationSelected = new DashedCircleAnimation(this, 1.2 * outerCircle.getRadius());
+        animationSelected = new DashedCircleAnimation(this, 1.2 * outerCircle.getRadius(), DashedCircleAnimation.RotateDirection.CLOCKWISE);
 
         double r = innerCircle.getRadius();
         Line line1 = new Line(-0.50 * r, -0.50 * r, 0.50 * r, 0.50 * r);

@@ -51,13 +51,13 @@ public class Point extends CheckerStack {
     private Animation animationPotentialDestination;
     
     public Point(double width, double height, PointColor color) {
-        backgroundTriangle = new IsoscelesTriangle(width, height);
-        backgroundTriangle.setFill(color.getColor());
-        backgroundTriangle.setStrokeWidth(1);
-        backgroundTriangle.setStroke(Color.BLACK);
-        super.getChildren().setAll(backgroundTriangle);
+        backgroundShape = new IsoscelesTriangle(width, height);
+        backgroundShape.setFill(color.getColor());
+        backgroundShape.setStrokeWidth(1);
+        backgroundShape.setStroke(Color.BLACK);
+        super.getChildren().setAll(backgroundShape);
 
-        animationPotentialDestination = new ChangingColorAnimation(backgroundTriangle);
+        animationPotentialDestination = new ChangingColorAnimation(backgroundShape);
     }
     
     @Override
@@ -68,7 +68,7 @@ public class Point extends CheckerStack {
     @Override
     public void update() {
         super.getChildren().clear();
-        super.getChildren().add(backgroundTriangle);
+        super.getChildren().add(backgroundShape);
         int[] height = {MAX_HEIGHT, MAX_HEIGHT - 1};
         int j = 1, k = 0;
         for (Checker checker : checkers) {

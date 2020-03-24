@@ -20,6 +20,7 @@
 package askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation;
 
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Sprite;
+
 import javafx.animation.*;
 import javafx.animation.Animation;
 import javafx.scene.paint.Color;
@@ -32,12 +33,27 @@ import javafx.util.Duration;
  */
 public class DashedCircleAnimation extends SpriteAnimation {
 
+    public enum RotateDirection {
+        CLOCKWISE(1.), ANTICLOCKWISE(-1.);
+
+        private double multiplier;
+
+        RotateDirection(double multiplier) {
+            this.multiplier = multiplier;
+        }
+
+        double getMultiplier() {
+            return multiplier;
+        }
+
+    };
+
     private static final int NUM_SEGMENTS = 2;
 
     private Circle dashedCircle;
     private ParallelTransition compositeAnimation;
 
-    public DashedCircleAnimation(Sprite sprite, double dashedCircleRadius) {
+    public DashedCircleAnimation(Sprite sprite, double dashedCircleRadius, RotateDirection rotateDirection) {
         super(sprite);
 
         dashedCircle = new Circle(dashedCircleRadius);
@@ -63,7 +79,7 @@ public class DashedCircleAnimation extends SpriteAnimation {
 
         final RotateTransition rotateAnimation = new RotateTransition(Duration.seconds(NUM_SEGMENTS * 0.4), dashedCircle);
         rotateAnimation.setFromAngle(0.);
-        rotateAnimation.setByAngle(360.);
+        rotateAnimation.setByAngle(rotateDirection.getMultiplier() * 360.);
         rotateAnimation.setInterpolator(Interpolator.LINEAR);
         rotateAnimation.setCycleCount(Animation.INDEFINITE);
 

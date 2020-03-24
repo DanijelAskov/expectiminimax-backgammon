@@ -190,8 +190,8 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
         initialDepth = -1;
         expectiminimax(3, 0);
         /*
-            Depth should be an odd integer value (1, 3, 5, etc.).
-            Depth grater than 3 causes combinatorial explosion! Some kind of optimization is necessary (e.g. alpha-beta pruning).
+            Depth should be an odd integer value (1, 3, 5, etc.)
+            Depth grater than 3 causes a combinatorial explosion! Some kind of optimization is necessary (e.g. alpha-beta pruning)
          */
         initialDepth = -1;
         try {

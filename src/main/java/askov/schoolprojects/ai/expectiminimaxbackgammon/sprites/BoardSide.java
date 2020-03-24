@@ -54,9 +54,7 @@ public class BoardSide extends Sprite {
             } else {
                 point.setTranslateX(0.025 * width + (NUM_POINTS_PER_SIDE / 2. - 1 - i) * (0.95 * width / (NUM_POINTS_PER_SIDE / 2.)));
                 point.setTranslateY(height);
-                point.getTransforms().addAll(
-                        new Scale(1, -1, point.getTranslateX() + (0.95 * width / (NUM_POINTS_PER_SIDE / 2.)) / 2, 0)
-                );
+                point.getTransforms().addAll(new Scale(1, -1, point.getTranslateX() + (0.95 * width / (NUM_POINTS_PER_SIDE / 2.)) / 2, 0));
             }
             points.add(point);
             super.getChildren().add(point);

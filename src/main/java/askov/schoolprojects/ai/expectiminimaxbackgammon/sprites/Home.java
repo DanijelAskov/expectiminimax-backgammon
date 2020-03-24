@@ -19,16 +19,12 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon.sprites;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.ChangingColorAnimation;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 
 /**
  * @author  Danijel Askov
@@ -47,49 +43,28 @@ public class Home extends CheckerStack {
     private final double width, height;
     private final StackingDirection direction;
 
-    private Timeline animation;
+    private askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.Animation animationPotentialDestination;
 
     public Home(double width, double height, StackingDirection direction) {
-        backgroundTriangle = new Rectangle(this.width = width, this.height = height);
-        backgroundTriangle.setFill(Board.BOARD_FILL.brighter());
-        backgroundTriangle.setStroke(Color.BLACK);
-        backgroundTriangle.setStrokeWidth(1);
         this.direction = direction;
+
+        backgroundShape = new Rectangle(this.width = width, this.height = height);
+        backgroundShape.setFill(Board.BOARD_FILL.brighter());
+        backgroundShape.setStroke(Color.BLACK);
+        backgroundShape.setStrokeWidth(1);
+
+        animationPotentialDestination = new ChangingColorAnimation(backgroundShape);
     }
 
     @Override
     public void animateSelected(boolean selected) {
-        if (animation != null)
-                animation.stop();
-        if(selected) {
-            if (animation == null) {
-                animation = new Timeline();         
-               
-                KeyValue startStrokeWidthKeyValue = new KeyValue(backgroundTriangle.strokeWidthProperty(), 0);
-                KeyValue startStrokeColorKeyValue = new KeyValue(backgroundTriangle.strokeProperty(), Color.BLACK);
-                KeyFrame startKeyFrame = new KeyFrame(Duration.seconds(0), startStrokeWidthKeyValue, startStrokeColorKeyValue);
-
-                KeyValue endStrokeWidthKeyValue = new KeyValue(backgroundTriangle.strokeWidthProperty(), 4);
-                KeyValue endStrokeColorKeyValue = new KeyValue(backgroundTriangle.strokeProperty(), Color.YELLOW);
-                KeyFrame endKeyFrame = new KeyFrame(Duration.seconds(0.40), endStrokeColorKeyValue, endStrokeWidthKeyValue);
-
-                animation.getKeyFrames().addAll(startKeyFrame, endKeyFrame);
-                
-                animation.setAutoReverse(true);
-                animation.setCycleCount(Animation.INDEFINITE);
-            }
-            
-            animation.play();
-        } else { 
-            backgroundTriangle.setStrokeWidth(1);
-            backgroundTriangle.setStroke(Color.BLACK);
-        }
+        if (selected) animationPotentialDestination.start(); else animationPotentialDestination.stop();
     }
 
     @Override
     public void update() {
         super.getChildren().clear();
-        super.getChildren().add(backgroundTriangle);
+        super.getChildren().add(backgroundShape);
         int i = 0;
         for (Checker checker : checkers) {
             Rectangle rectangle = new Rectangle(width - 4, (1. / 15) * height, LIN_GRAD[checker.getCheckerColor().getValue()]);
