@@ -19,9 +19,9 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon;
 
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.game.Game;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.game.HumanVsComputerGame;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.game.HumanVsHumanGame;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.Game;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.HumanVsComputerGame;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.HumanVsHumanGame;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;

@@ -4,3 +4,6 @@ build/
 
 # Ignore IDE-specific files
 .idea/
+
+# Ignore log files
+*.log

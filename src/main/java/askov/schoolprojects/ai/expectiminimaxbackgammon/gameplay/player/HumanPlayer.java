@@ -17,19 +17,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.player;
+package askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player;
 
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Board;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Checker;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Checker.CheckerColor;
 
-public class DummyPlayer extends Player {
+/**
+ * @author  Danijel Askov
+ */
+public class HumanPlayer extends Player {
 
-    public DummyPlayer(Checker.CheckerColor checkerColor, Board board) {
+    public HumanPlayer(CheckerColor checkerColor, Board board) {
         super(checkerColor, board);
     }
-
-    public DummyPlayer(Checker.CheckerColor checkerColor) {
+    
+    public HumanPlayer(CheckerColor checkerColor) {
         super(checkerColor);
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " (Human)";
+    }
+    
 }

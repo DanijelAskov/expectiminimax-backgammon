@@ -31,8 +31,8 @@ public class Point extends CheckerStack {
 
     public enum PointColor {
 
-        FIRST(Color.web("0xDA221D")),
-        SECOND(Color.web("0xDEDCAE"));
+        RED(Color.web("0xDA221D")),
+        WHITE(Color.web("0xDEDCAE"));
 
         private final Color color;
 

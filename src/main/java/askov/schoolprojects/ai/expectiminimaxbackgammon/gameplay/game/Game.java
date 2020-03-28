@@ -17,9 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.game;
+package askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game;
 
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.player.Player;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player.Player;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Board;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Checker;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.CheckerStackIndexOutOfBoundsException;

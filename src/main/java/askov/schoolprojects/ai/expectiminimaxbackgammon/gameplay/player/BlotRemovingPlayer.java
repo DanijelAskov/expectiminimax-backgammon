@@ -17,10 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.player;
+package askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player;
 
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.player.move.CheckerRelocation;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gamelogic.player.move.Move;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player.move.CheckerRelocation;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player.move.Move;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Board;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Checker;
 
