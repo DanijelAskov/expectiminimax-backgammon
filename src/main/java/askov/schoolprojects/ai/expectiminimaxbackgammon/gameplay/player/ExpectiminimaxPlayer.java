@@ -27,6 +27,8 @@ import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Die;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
             this.name = name;
         }
 
-        @Override()
+        @Override
         public String toString() {
             return name;
         }
@@ -62,19 +64,31 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
     private final Player opponent;
     private int initialDepth = -1;
     public StringBuilder treeStringRepresentationBuilder = new StringBuilder("");
+    private boolean logExpectiminimaxTree = false;
 
-    public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor, Board board) {
+    public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor, Board board, boolean logExpectiminimaxTree) {
         super(checkerColor, board);
+        this.logExpectiminimaxTree = logExpectiminimaxTree;
         opponent = new DummyPlayer(Checker.CheckerColor.getOppositeCheckerColor(checkerColor), board);
     }
 
-    public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor) {
+    public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor, Board board) {
+        this(checkerColor, board, false);
+    }
+
+    public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor, boolean logExpectiminimaxTree) {
         super(checkerColor);
+        this.logExpectiminimaxTree = logExpectiminimaxTree;
         opponent = new DummyPlayer(Checker.CheckerColor.getOppositeCheckerColor(checkerColor), null);
     }
 
+    public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor) {
+        this(checkerColor, false);
+    }
+
     private double heuristicValue(int currentNodeIndex, int depth) {
-        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth + 1) + "No dice combinations analyzed, using heuristics\n");
+        if (logExpectiminimaxTree)
+            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth + 1) + "No dice combinations analyzed, using heuristics\n");
 
         Checker.CheckerColor myColor = getCheckerColor();
         Checker.CheckerColor opponentColor = opponent.getCheckerColor();
@@ -98,7 +112,8 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
 
         if (initialDepth == -1) initialDepth = depth;
         Die[] diceToPrint = NODES[currentNodeIndex] == Node.MAX ? getDice() : opponent.getDice();
-        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + NODES[currentNodeIndex] + (NODES[currentNodeIndex] != Node.CHANCE ? " [(" + diceToPrint[0] + ", " + diceToPrint[1] + ")] " : " ") + "{\n");
+        if (logExpectiminimaxTree)
+            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + NODES[currentNodeIndex] + (NODES[currentNodeIndex] != Node.CHANCE ? " [(" + diceToPrint[0] + ", " + diceToPrint[1] + ")] " : " ") + "{\n");
 
         switch (NODES[currentNodeIndex]) {
             case MAX:
@@ -113,11 +128,13 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
                     double[] moveQuality = new double[moves.size()];
 
                     for (int i = 0; i < moves.size(); i++) {
-                        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + moves.get(i) + " {\n");
+                        if (logExpectiminimaxTree)
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + moves.get(i) + " {\n");
                         make(moves.get(i));
                         moveQuality[i] = expectiminimax(depth - 1, (currentNodeIndex + 1) % 4);
                         unmake(moves.get(i));
-                        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [Move: " + moveQuality[i] + "]\n");
+                        if (logExpectiminimaxTree)
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [Move: " + moveQuality[i] + "]\n");
                     }
 
                     if (depth == initialDepth) {
@@ -142,11 +159,13 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
                     double[] moveQuality = new double[moves.size()];
 
                     for (int i = 0; i < moves.size(); i++) {
-                        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + moves.get(i) + " {\n");
+                        if (logExpectiminimaxTree)
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + moves.get(i) + " {\n");
                         opponent.make(moves.get(i));
                         moveQuality[i] = expectiminimax(depth - 1, (currentNodeIndex + 1) % 4);
                         opponent.unmake(moves.get(i));
-                        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [Move: " + moveQuality[i] + "]\n");
+                        if (logExpectiminimaxTree)
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [Move: " + moveQuality[i] + "]\n");
                     }
 
                     result = min(moveQuality);
@@ -179,7 +198,8 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
                     result = weightedAverage(values);
                 }
         }
-        treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [" + NODES[currentNodeIndex] + ":" + result + "]\n");
+        if (logExpectiminimaxTree)
+            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [" + NODES[currentNodeIndex] + ":" + result + "]\n");
 
         return result;
     }
@@ -217,10 +237,12 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
     @Override
     public Move getBestMove() {
         initialDepth = -1;
-        LOGGER.info(String.format("Calling expectiminimax(%d,0)", DEFAULT_DEPTH));
+        Instant start = Instant.now();
         expectiminimax(DEFAULT_DEPTH, 0);
-        LOGGER.info(String.format("Returned from expectiminimax(%d,0)", DEFAULT_DEPTH));
-        LOGGER.info("Generated Expectiminimax tree:\n" + treeStringRepresentationBuilder.toString());
+        Instant finish = Instant.now();
+        LOGGER.info(String.format("Execution time for expectiminimax(%d,0): %d milliseconds", DEFAULT_DEPTH, Duration.between(start, finish).toMillis()));
+        if (logExpectiminimaxTree)
+            LOGGER.info("Generated Expectiminimax tree:\n" + treeStringRepresentationBuilder.toString());
         /*
             Depth should be an odd integer value (1, 3, 5, etc.)
             Depth grater than 3 causes a combinatorial explosion! Some kind of optimization is necessary (e.g. alpha-beta pruning)
