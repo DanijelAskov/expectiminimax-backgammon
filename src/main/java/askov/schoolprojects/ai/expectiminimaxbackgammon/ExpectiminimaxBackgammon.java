@@ -19,6 +19,7 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon;
 
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.ComputerVsComputerGame;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.Game;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.HumanVsComputerGame;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.HumanVsHumanGame;
@@ -35,8 +36,9 @@ import java.util.Optional;
 /**
  * @author  Danijel Askov
  */
-public class ExpectiminimaxBackgammon extends Application {
+public final class ExpectiminimaxBackgammon extends Application {
 
+    private static final String COMPUTER_VS_COMPUTER = "Computer vs Computer";
     private static final String HUMAN_VS_COMPUTER = "Human vs Computer";
     private static final String HUMAN_VS_HUMAN = "Human vs Human";
 
@@ -48,6 +50,7 @@ public class ExpectiminimaxBackgammon extends Application {
         List<String> choices = new ArrayList<>();
         choices.add(HUMAN_VS_COMPUTER);
         choices.add(HUMAN_VS_HUMAN);
+        choices.add(COMPUTER_VS_COMPUTER);
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>(HUMAN_VS_COMPUTER, choices);
         dialog.setTitle("ExpectiminimaxBackgammon");
@@ -57,11 +60,13 @@ public class ExpectiminimaxBackgammon extends Application {
         Game game = null;
 
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-            if (HUMAN_VS_HUMAN.equals(result.get())) {
+        if (result.isPresent()) {
+            if (HUMAN_VS_COMPUTER.equals(result.get())) {
+                game = new HumanVsComputerGame(WIDTH, HEIGHT);
+            } else if (HUMAN_VS_HUMAN.equals(result.get())) {
                 game = new HumanVsHumanGame(WIDTH, HEIGHT);
             } else {
-                game = new HumanVsComputerGame(WIDTH, HEIGHT);
+                game = new ComputerVsComputerGame(WIDTH, HEIGHT);
             }
         } else {
             Platform.exit();
@@ -76,6 +81,9 @@ public class ExpectiminimaxBackgammon extends Application {
             primaryStage.setResizable(false);
             primaryStage.sizeToScene();
             primaryStage.show();
+
+            if (game instanceof ComputerVsComputerGame)
+                ((ComputerVsComputerGame)game).play();
         }
     }
 

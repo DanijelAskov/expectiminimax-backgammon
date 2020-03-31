@@ -37,7 +37,14 @@ public class Home extends CheckerStack {
     }
 
     private static final LinearGradient[] LIN_GRAD = {
-            new LinearGradient(0, 0, 0.5, 0, true, CycleMethod.REFLECT, new Stop(0, Color.rgb(8, 8, 8)), new Stop(1, Color.rgb(74, 74, 74))), new LinearGradient(0, 0, 0.5, 0, true, CycleMethod.REFLECT, new Stop(0, Color.rgb(183, 180, 165)), new Stop(1, Color.rgb(222, 220, 174))),
+        new LinearGradient(0., 0., 0.5, 0, true, CycleMethod.NO_CYCLE,
+            new Stop(0., Color.rgb(8, 8, 8)),
+            new Stop(1., Color.rgb(74, 74, 74))
+        ),
+        new LinearGradient(0., 0., 0.5, 0, true, CycleMethod.NO_CYCLE,
+            new Stop(0., Color.rgb(183, 180, 165)),
+            new Stop(1., Color.rgb(222, 220, 174))
+        ),
     };
 
     private final double width, height;

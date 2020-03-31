@@ -161,5 +161,11 @@ public abstract class Game {
         String title = stage.getTitle();
         stage.setTitle(title.substring(0, title.length() - (" | " + otherPlayer()).length()) + " | " + currentPlayer);
     }
+
+    protected void removeDice(Die[] dice) {
+        for (Die die : dice) {
+            board.getChildren().remove(die);
+        }
+    }
     
 }

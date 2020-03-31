@@ -5,9 +5,11 @@
 ## Short application description
 
 A 2D JavaFX implementation of one of the most popular and oldest board games.
-Two game modes are supported:
-* Human vs Human
+Three game modes are supported:
+
 * Human vs Computer (i.e. AI player)
+* Human vs Human
+* Computer vs Computer
 
 The AI player's moves are determined using the [**expectiminimax algorithm**](https://en.wikipedia.org/wiki/Expectiminimax?oldformat=true).
 

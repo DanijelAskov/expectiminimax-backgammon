@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import askov.schoolprojects.ai.expectiminimaxbackgammon.util.Util;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -191,18 +192,12 @@ public class HumanVsHumanGame extends Game {
     private void addAndShowDice(Die... dice) {
         int i = 0;
         for (Die die : dice) {
-            die.setTranslateX((0.20 + i++ * 0.40) * board.getWidth() + Math.random() * (0.20 * board.getWidth()));
+            die.setTranslateX((0.20 + i++ * 0.40) * board.getWidth() + Util.generateRandomDouble(0., 0.20 * board.getWidth()));
             die.setTranslateY(0.50 * board.getHeight() - die.getSize() / 2);
-            die.setRotate(Math.random() * 360);
+            die.setRotate(Util.generateRandomDouble(0., 360));
             board.getChildren().add(die);
             die.update();
             die.show();
-        }
-    }
-    
-    private void removeDice(Die[] dice) {
-        for (Die die : dice) {
-            board.getChildren().remove(die);
         }
     }
 

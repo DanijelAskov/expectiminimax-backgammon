@@ -19,9 +19,14 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon.sprites;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.ChangingColorAnimation;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.util.Util;
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -66,6 +71,7 @@ public class Die extends Sprite {
         new Die(6), new Die(6)
     };
 
+    private final Rectangle rectangle = new Rectangle();
     private final Circle[] dots = new Circle[9];
     
     private final double size;
@@ -74,7 +80,6 @@ public class Die extends Sprite {
     private boolean used;
     
     public Die(double size)  {
-        Rectangle rectangle = new Rectangle();
         rectangle.setWidth(this.size = size);
         rectangle.setHeight(size);
         rectangle.setArcHeight(size / 4);
@@ -94,6 +99,8 @@ public class Die extends Sprite {
             
             super.getChildren().add(dots[i]);
         }
+
+        changingColorAnimation = new ChangingColorAnimation(rectangle);
     }
 
     public Die(double size, int value)  {
@@ -111,7 +118,7 @@ public class Die extends Sprite {
     
     public void roll() {
         try {
-            setValue(value = (int) (Math.random() * 6) + 1);
+            setValue(Util.generateRandomInt(1, 6));
         } catch (DieValueOutOfBoundsException ex) {
             Logger.getLogger(Die.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,22 +163,25 @@ public class Die extends Sprite {
     }
     
     private FadeTransition fadeOutTransition;
+    private ChangingColorAnimation changingColorAnimation;
     private FadeTransition fadeInTransition;
 
     public void hide() {
         if (fadeOutTransition == null) {
-            fadeOutTransition = new FadeTransition(Duration.seconds(1), this);
-            fadeOutTransition.setFromValue(1);
-            fadeOutTransition.setToValue(0);
+            fadeOutTransition = new FadeTransition(Duration.seconds(1.5), this);
+            fadeOutTransition.setFromValue(1.);
+            fadeOutTransition.setToValue(0.);
         }
         fadeOutTransition.play();
+        changingColorAnimation.start();
     }
 
     public void show() {
+        changingColorAnimation.stop();
         if (fadeInTransition == null) {
-            fadeInTransition = new FadeTransition(Duration.seconds(1), this);
-            fadeInTransition.setFromValue(0);
-            fadeInTransition.setToValue(1);
+            fadeInTransition = new FadeTransition(Duration.seconds(1.5), this);
+            fadeInTransition.setFromValue(0.);
+            fadeInTransition.setToValue(1.);
         }
         fadeInTransition.play();
     }
