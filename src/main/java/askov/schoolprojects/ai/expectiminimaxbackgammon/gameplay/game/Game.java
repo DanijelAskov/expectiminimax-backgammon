@@ -149,7 +149,7 @@ public abstract class Game {
         refreshTitle();
     }
 
-    private Player otherPlayer() {
+    private Player getOtherPlayer() {
         return players[(currentPlayerIndex + 1) % NUM_PLAYERS];
     }
 
@@ -159,7 +159,7 @@ public abstract class Game {
 
     private void refreshTitle() {
         String title = stage.getTitle();
-        stage.setTitle(title.substring(0, title.length() - (" | " + otherPlayer()).length()) + " | " + currentPlayer);
+        stage.setTitle(title.substring(0, title.length() - (" | " + getOtherPlayer()).length()) + " | " + currentPlayer);
     }
 
     protected void removeDice(Die[] dice) {
