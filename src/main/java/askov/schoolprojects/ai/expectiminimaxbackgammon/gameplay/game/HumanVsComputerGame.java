@@ -77,7 +77,7 @@ public class HumanVsComputerGame extends Game {
                 }
                 checker.setCursor(checkerIsMovable ? Cursor.HAND : Cursor.DEFAULT);
             });
-            checker.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            checker.setOnMouseClicked(new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (pickedUpChecker == checker) {

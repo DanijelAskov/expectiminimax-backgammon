@@ -49,10 +49,10 @@ public class ComputerVsComputerGame extends Game {
     public void play() {
         Move bestMove = ((ComputerPlayer) currentPlayer).getBestMove();
         if (bestMove != null) {
-            Task<Void> checkerRelocator = new Task<Void>() {
+            Task<Void> checkerRelocator = new Task<>() {
 
                 @Override
-                protected Void call() throws Exception {
+                protected Void call() {
                     for (CheckerRelocation relocation : bestMove.getCheckerRelocations()) {
                         try {
                             Platform.runLater(() -> {

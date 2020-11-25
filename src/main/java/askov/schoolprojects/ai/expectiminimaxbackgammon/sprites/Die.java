@@ -19,14 +19,11 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon.sprites;
 
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.ChangingColorAnimation;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.util.Util;
 import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -99,8 +96,6 @@ public class Die extends Sprite {
             
             super.getChildren().add(dots[i]);
         }
-
-        changingColorAnimation = new ChangingColorAnimation(rectangle);
     }
 
     public Die(double size, int value)  {
@@ -163,7 +158,6 @@ public class Die extends Sprite {
     }
     
     private FadeTransition fadeOutTransition;
-    private ChangingColorAnimation changingColorAnimation;
     private FadeTransition fadeInTransition;
 
     public void hide() {
@@ -173,11 +167,9 @@ public class Die extends Sprite {
             fadeOutTransition.setToValue(0.);
         }
         fadeOutTransition.play();
-        changingColorAnimation.start();
     }
 
     public void show() {
-        changingColorAnimation.stop();
         if (fadeInTransition == null) {
             fadeInTransition = new FadeTransition(Duration.seconds(1.5), this);
             fadeInTransition.setFromValue(0.);

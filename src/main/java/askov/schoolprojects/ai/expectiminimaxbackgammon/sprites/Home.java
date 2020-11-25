@@ -19,6 +19,7 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon.sprites;
 
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.Animation;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.ChangingColorAnimation;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -50,7 +51,7 @@ public class Home extends CheckerStack {
     private final double width, height;
     private final StackingDirection direction;
 
-    private askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.animation.Animation animationPotentialDestination;
+    private Animation animationPotentialDestination;
 
     public Home(double width, double height, StackingDirection direction) {
         this.direction = direction;
