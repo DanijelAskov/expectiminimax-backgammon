@@ -90,7 +90,7 @@ public abstract class AbstractBackgammonGame {
         board.update();
 
         currentPlayer = players[currentPlayerIndex];
-        System.out.println("Current Game State: " + gameState);
+        // System.out.println("Current Game State: " + gameState);
         updateGameState(GameAction.GAME_STARTED);
     }
 

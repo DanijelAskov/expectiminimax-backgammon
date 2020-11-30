@@ -60,7 +60,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
             case WAITING_FOR_GAME_TO_START:
                 if (gameAction == GameAction.GAME_STARTED) {
                     gameState = GameState.WAITING_FOR_DICE_ROLL;
-                    System.out.println(currentPlayer.toString() + ": " + gameState);
+                    // System.out.println(currentPlayer.toString() + ": " + gameState);
                     updateGameState(GameAction.NULL);
                 }
                 break;
@@ -73,8 +73,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     if (currentPlayer.getPossibleMoves().isEmpty()) {
                         gameState = GameState.WAITING_END_OF_TURN_CONFIRMATION;
                         alertEndOfTurn("No possible moves for the given dice combination for the " + currentPlayer);
-                        System.out.println(currentPlayer.toString() + ": " + gameState);
-                        System.out.println("(1)");
+                        // System.out.println(currentPlayer.toString() + ": " + gameState);
                         break;
                     }
                 } catch (BoardNotSpecifiedException ex) {
@@ -93,11 +92,11 @@ public class BackgammonGame extends AbstractBackgammonGame {
                         } catch (CheckerStackIndexOutOfBoundsException ex) {
                             Logger.getLogger(BackgammonGame.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        checkerStack.setOnMouseEntered(new ChangeCursorIconIfPointIsPossibleDestination(checkerStack)); // TODO: Ovo uraditi samo jednom?
+                        checkerStack.setOnMouseEntered(new ChangeCursorIconIfPointIsPossibleDestination(checkerStack));
                         checkerStack.setOnMouseClicked(new RelocateCheckerWhenCheckerStackClicked(checkerStack, GameAction.FIRST_RELOCATION_DEFINED));
                     }
                     CheckerStack checkerStack;
-                    checkerStack = board.getHome(currentPlayer.getCheckerColor()); // TODO: Ne treba raditi za oba Home-a???
+                    checkerStack = board.getHome(currentPlayer.getCheckerColor());
                     checkerStack.setOnMouseClicked(new RelocateCheckerWhenCheckerStackClicked(checkerStack, GameAction.FIRST_RELOCATION_DEFINED));
                 } else {
                     Move bestMove = ((ComputerPlayer) currentPlayer).getBestMove();
@@ -134,8 +133,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                                         if (numRelocations == 1) {
                                             gameState = GameState.WAITING_END_OF_TURN_CONFIRMATION;
                                             alertEndOfTurn("No more possible moves for the " + currentPlayer);
-                                            System.out.println(currentPlayer.toString() + ": " + gameState);
-                                            System.out.println("(2)");
+                                            // System.out.println(currentPlayer.toString() + ": " + gameState);
                                         } else {
                                             updateGameState(finalCurrentRelocation == 1 ? GameAction.FIRST_RELOCATION_DEFINED : GameAction.SECOND_RELOCATION_DEFINED);
                                         }
@@ -151,7 +149,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     }
                 }
                 gameState = GameState.WAITING_FOR_FIRST_RELOCATION;
-                System.out.println(currentPlayer.toString() + ": " + gameState);
+                // System.out.println(currentPlayer.toString() + ": " + gameState);
                 break;
             case WAITING_FOR_FIRST_RELOCATION:
                 if (gameAction == GameAction.FIRST_RELOCATION_DEFINED) {
@@ -179,7 +177,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                         checkerStack.setOnMouseClicked(new RelocateCheckerWhenCheckerStackClicked(checkerStack, GameAction.SECOND_RELOCATION_DEFINED));
                         gameState = GameState.WAITING_FOR_SECOND_RELOCATION;
                     }
-                    System.out.println(currentPlayer.toString() + ": " + gameState);
+                    // System.out.println(currentPlayer.toString() + ": " + gameState);
                 }
                 break;
             case WAITING_FOR_SECOND_RELOCATION:
@@ -205,7 +203,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     } else {
                         switchCurrentPlayer();
                         gameState = GameState.WAITING_FOR_DICE_ROLL;
-                        System.out.println(currentPlayer.toString() + ": " + gameState);
+                        // System.out.println(currentPlayer.toString() + ": " + gameState);
                         updateGameState(GameAction.NULL);
                     }
                 }
@@ -233,7 +231,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     } else {
                         switchCurrentPlayer();
                         gameState = GameState.WAITING_FOR_DICE_ROLL;
-                        System.out.println(currentPlayer.toString() + ": " + gameState);
+                        // System.out.println(currentPlayer.toString() + ": " + gameState);
                         updateGameState(GameAction.NULL);
                     }
                 }
