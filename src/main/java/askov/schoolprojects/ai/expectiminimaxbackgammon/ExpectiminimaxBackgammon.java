@@ -59,7 +59,6 @@ public final class ExpectiminimaxBackgammon extends Application {
         dialog.setHeaderText("Game Mode");
         dialog.setContentText("Specify who do you want to play against by choosing one of the two game modes:");
 
-        AbstractBackgammonGame game = null;
         Player[] players = new Player[AbstractBackgammonGame.NUM_PLAYERS];
 
         Optional<String> result = dialog.showAndWait();
@@ -78,7 +77,7 @@ public final class ExpectiminimaxBackgammon extends Application {
             Platform.exit();
         }
 
-        game = new BackgammonGame(WIDTH, HEIGHT, players);
+        AbstractBackgammonGame game = new BackgammonGame(WIDTH, HEIGHT, players);
 
         Scene scene = new Scene(game.getBoard(), WIDTH, HEIGHT);
 
