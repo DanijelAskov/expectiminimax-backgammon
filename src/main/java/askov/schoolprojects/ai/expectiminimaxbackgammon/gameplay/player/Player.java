@@ -52,7 +52,6 @@ public abstract class Player {
         if (board != null) {
             for (int i = 0; i < NUM_DICE; i++) {
                 dice[i] = new Die(0.05 * board.getWidth());
-                dice[i].roll();
             }
         }
     }
@@ -69,6 +68,10 @@ public abstract class Player {
             }
         }
         this.board = board;
+    }
+
+    public Board getBoard() {
+        return this.board;
     }
 
     public CheckerColor getCheckerColor() {

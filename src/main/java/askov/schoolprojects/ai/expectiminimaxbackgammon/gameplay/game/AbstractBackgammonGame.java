@@ -24,6 +24,7 @@ import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Board;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Checker;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.CheckerStackIndexOutOfBoundsException;
 import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Die;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.util.Util;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
@@ -35,15 +36,15 @@ import java.util.logging.Logger;
 /**
  * @author  Danijel Askov
  */
-public abstract class Game {
+public abstract class AbstractBackgammonGame {
 
-    private static final int NUM_PLAYERS = 2;
+    public static final int NUM_PLAYERS = 2;
 
     protected final Board board;
     protected final Checker[] checkers;
     private final Player[] players = new Player[NUM_PLAYERS];
 
-    private static final int[] POINT_INDICES = {6, 8, 13, 24};
+    protected static final int[] POINT_INDICES = {6, 8, 13, 24};
     private static final int[] NUM_CHECKERS = {5, 3, 5, 2};
     
     private static final int NUM_CHECKERS_PER_PLAYER = 15;
@@ -55,7 +56,9 @@ public abstract class Game {
 
     private Stage stage;
 
-    public Game(double boardWidth, double boardHeight, Player... players) {
+    protected GameState gameState = GameState.WAITING_FOR_GAME_TO_START;
+
+    public AbstractBackgammonGame(double boardWidth, double boardHeight, Player... players) {
         board = new Board(boardWidth, boardHeight);
 
         for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -84,19 +87,14 @@ public abstract class Game {
             }
         }
 
-        currentPlayer = players[currentPlayerIndex];
+        board.update();
 
-        try {
-            currentPlayer.generatePossibleMoves();
-            while (currentPlayer.getPossibleMoves().isEmpty()) {
-                currentPlayer.rollDice();
-                switchCurrentPlayer();
-                currentPlayer.generatePossibleMoves();
-            }
-        } catch (BoardNotSpecifiedException ex) {
-            Logger.getLogger(HumanVsComputerGame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        currentPlayer = players[currentPlayerIndex];
+        System.out.println("Current Game State: " + gameState);
+        updateGameState(GameAction.GAME_STARTED);
     }
+
+    public abstract void updateGameState(GameAction gameAction);
     
     public Board getBoard() {
         return board;
@@ -117,30 +115,27 @@ public abstract class Game {
         setTitle();
     }
 
-    protected final void alert(Alert.AlertType alertType, String title, String header, String content) {
-        Alert info = new Alert(alertType);
+    protected final void alertEndOfTurn(String content) {
+        Alert info = new Alert(Alert.AlertType.WARNING);
         info.initOwner(stage);
-        info.setTitle(title);
+        info.setTitle("Expectiminimax Backgammon");
         info.initModality(Modality.APPLICATION_MODAL);
-        info.setHeaderText(header);
+        info.setHeaderText("End of the Turn");
         info.setContentText(content);
+        info.showAndWait().ifPresent(response -> {
+            updateGameState(GameAction.END_OF_TURN_CONFIRMED);
+        });
+    }
+
+    protected final void alertGameOverAndExit() {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.initOwner(stage);
+        info.setTitle("Expectiminimax Backgammon");
+        info.initModality(Modality.APPLICATION_MODAL);
+        info.setHeaderText("Game Over");
+        info.setContentText(getWinner() + " wins!");
         info.showAndWait();
-    }
-
-    protected final void alertAndExit(Alert.AlertType alertType, String title, String header, String content) {
-        alert(alertType, title, header, content);
         Platform.exit();
-    }
-
-    protected int numUsedDiceForCurrentPlayer() {
-        int numUsedDice = 0;
-
-        Die[] dice = currentPlayer.getDice();
-        for (Die die : dice) {
-            numUsedDice += die.isUsed() ? 1 : 0;
-        }
-
-        return numUsedDice;
     }
 
     protected void switchCurrentPlayer() {
@@ -160,6 +155,19 @@ public abstract class Game {
     private void refreshTitle() {
         String title = stage.getTitle();
         stage.setTitle(title.substring(0, title.length() - (" | " + getOtherPlayer()).length()) + " | " + currentPlayer);
+    }
+
+    protected void addAndShowDice(Die... dice) {
+        int i = 0;
+        for (Die die : dice) {
+            die.setTranslateX((0.20 + i++ * 0.40) * board.getWidth() + Util.generateRandomDouble(0., 0.20 * board.getWidth()));
+            die.setTranslateY(0.50 * board.getHeight() - die.getSize() / 2);
+            die.setRotate(Util.generateRandomDouble(0., 360));
+            if (!board.getChildren().contains(die))
+                board.getChildren().add(die);
+            die.update();
+            die.show();
+        }
     }
 
     protected void removeDice(Die[] dice) {

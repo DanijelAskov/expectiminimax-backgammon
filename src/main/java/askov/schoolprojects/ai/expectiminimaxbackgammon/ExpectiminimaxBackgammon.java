@@ -19,10 +19,12 @@
 
 package askov.schoolprojects.ai.expectiminimaxbackgammon;
 
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.ComputerVsComputerGame;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.Game;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.HumanVsComputerGame;
-import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.HumanVsHumanGame;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.AbstractBackgammonGame;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.game.BackgammonGame;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player.ExpectiminimaxPlayer;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player.HumanPlayer;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.gameplay.player.Player;
+import askov.schoolprojects.ai.expectiminimaxbackgammon.sprites.Checker;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -57,34 +59,35 @@ public final class ExpectiminimaxBackgammon extends Application {
         dialog.setHeaderText("Game Mode");
         dialog.setContentText("Specify who do you want to play against by choosing one of the two game modes:");
 
-        Game game = null;
+        AbstractBackgammonGame game = null;
+        Player[] players = new Player[AbstractBackgammonGame.NUM_PLAYERS];
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             if (HUMAN_VS_COMPUTER.equals(result.get())) {
-                game = new HumanVsComputerGame(WIDTH, HEIGHT);
+                players[0] = new HumanPlayer(Checker.CheckerColor.WHITE);
+                players[1] = new ExpectiminimaxPlayer(Checker.CheckerColor.BLACK);
             } else if (HUMAN_VS_HUMAN.equals(result.get())) {
-                game = new HumanVsHumanGame(WIDTH, HEIGHT);
+                players[0] = new HumanPlayer(Checker.CheckerColor.WHITE);
+                players[1] = new HumanPlayer(Checker.CheckerColor.BLACK);
             } else {
-                game = new ComputerVsComputerGame(WIDTH, HEIGHT);
+                players[0] = new ExpectiminimaxPlayer(Checker.CheckerColor.WHITE);
+                players[1] = new ExpectiminimaxPlayer(Checker.CheckerColor.BLACK);
             }
         } else {
             Platform.exit();
         }
 
-        if (game != null) {
-            Scene scene = new Scene(game.getBoard(), WIDTH, HEIGHT);
+        game = new BackgammonGame(WIDTH, HEIGHT, players);
 
-            primaryStage.setTitle("Expectiminimax Backgammon | " + result.get());
-            primaryStage.setScene(scene);
-            game.setStage(primaryStage);
-            primaryStage.setResizable(false);
-            primaryStage.sizeToScene();
-            primaryStage.show();
+        Scene scene = new Scene(game.getBoard(), WIDTH, HEIGHT);
 
-            if (game instanceof ComputerVsComputerGame)
-                ((ComputerVsComputerGame)game).play();
-        }
+        primaryStage.setTitle("Expectiminimax Backgammon | " + result.get());
+        primaryStage.setScene(scene);
+        game.setStage(primaryStage);
+        primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
+        primaryStage.show();
     }
 
     /**

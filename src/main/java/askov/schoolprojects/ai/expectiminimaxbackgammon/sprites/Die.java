@@ -67,6 +67,8 @@ public class Die extends Sprite {
         new Die(5), new Die(6),
         new Die(6), new Die(6)
     };
+    public static final double TIME_TO_SHOW = 1.5;
+    public static final double TIME_TO_HIDE = 1.5;
 
     private final Rectangle rectangle = new Rectangle();
     private final Circle[] dots = new Circle[9];
@@ -162,7 +164,7 @@ public class Die extends Sprite {
 
     public void hide() {
         if (fadeOutTransition == null) {
-            fadeOutTransition = new FadeTransition(Duration.seconds(1.5), this);
+            fadeOutTransition = new FadeTransition(Duration.seconds(TIME_TO_SHOW), this);
             fadeOutTransition.setFromValue(1.);
             fadeOutTransition.setToValue(0.);
         }
@@ -171,7 +173,7 @@ public class Die extends Sprite {
 
     public void show() {
         if (fadeInTransition == null) {
-            fadeInTransition = new FadeTransition(Duration.seconds(1.5), this);
+            fadeInTransition = new FadeTransition(Duration.seconds(TIME_TO_HIDE), this);
             fadeInTransition.setFromValue(0.);
             fadeInTransition.setToValue(1.);
         }
