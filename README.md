@@ -1,5 +1,8 @@
 # Expectiminimax Backgammon
 
+[![CodeFactor](https://www.codefactor.io/repository/github/danijelaskov/expectiminimax-backgammon/badge)](https://www.codefactor.io/repository/github/danijelaskov/expectiminimax-backgammon)
+![Build & Test Java Project](https://github.com/DanijelAskov/expectiminimax-backgammon/actions/workflows/gradle.yml/badge.svg)
+
 ![Gameplay demonstration](demo/gameplay.gif)
 
 ## Short application description
