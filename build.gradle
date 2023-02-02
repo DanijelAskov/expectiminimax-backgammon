@@ -10,20 +10,20 @@ targetCompatibility = JavaVersion.VERSION_17
 group 'askov.schoolprojects.ai.expectiminimaxbackgammon'
 version '1.0'
 
-dependencies {
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.16.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
+application {
+    mainClassName = 'askov.schoolprojects.ai.expectiminimaxbackgammon.ExpectiminimaxBackgammon'
+}
+
+javafx {
+    version = '19'
+    modules = ['javafx.controls', 'javafx.media']
 }
 
 repositories {
     mavenCentral()
 }
 
-application {
-    mainClassName = 'askov.schoolprojects.ai.expectiminimaxbackgammon.ExpectiminimaxBackgammon'
-}
-
-javafx {
-    version = "19"
-    modules = ['javafx.controls', 'javafx.media']
+dependencies {
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
 }
