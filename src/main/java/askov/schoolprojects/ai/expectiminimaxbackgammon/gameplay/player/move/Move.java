@@ -66,12 +66,10 @@ public class Move {
             return true; 
         } 
         
-        if (!(object instanceof Move)) { 
+        if (!(object instanceof Move move)) {
             return false; 
-        } 
-          
-        Move move = (Move) object; 
-        
+        }
+
         if (this.checkerRelocations.size() != move.checkerRelocations.size())
             return false;
         

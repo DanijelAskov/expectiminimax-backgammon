@@ -28,7 +28,7 @@ public enum GameState {
     WAITING_FOR_SECOND_RELOCATION("WAITING_FOR_SECOND_RELOCATION"),
     WAITING_END_OF_TURN_CONFIRMATION("WAITING_FOR_TURN_END_CONFIRMATION");
 
-    String description;
+    final String description;
 
     GameState(String description) {
         this.description = description;

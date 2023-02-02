@@ -40,7 +40,7 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
     private enum Node {
         MAX ("MAX"), MIN("MIN"), CHANCE("CHANCE");
 
-        private String name;
+        private final String name;
 
         Node(String name) {
             this.name = name;
@@ -63,8 +63,8 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
     private double[] moveQuality;
     private final Player opponent;
     private int initialDepth = -1;
-    public StringBuilder treeStringRepresentationBuilder = new StringBuilder("");
-    private boolean logExpectiminimaxTree = false;
+    public final StringBuilder treeStringRepresentationBuilder = new StringBuilder();
+    private boolean logExpectiminimaxTree;
 
     public ExpectiminimaxPlayer(Checker.CheckerColor checkerColor, Board board, boolean logExpectiminimaxTree) {
         super(checkerColor, board);
@@ -88,7 +88,7 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
 
     private double heuristicValue(int currentNodeIndex, int depth) {
         if (logExpectiminimaxTree)
-            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth + 1) + "No dice combinations analyzed, using heuristics\n");
+            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth + 1)).append("No dice combinations analyzed, using heuristics\n");
 
         Checker.CheckerColor myColor = getCheckerColor();
         Checker.CheckerColor opponentColor = opponent.getCheckerColor();
@@ -113,28 +113,27 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
         if (initialDepth == -1) initialDepth = depth;
         Die[] diceToPrint = NODES[currentNodeIndex] == Node.MAX ? getDice() : opponent.getDice();
         if (logExpectiminimaxTree)
-            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + NODES[currentNodeIndex] + (NODES[currentNodeIndex] != Node.CHANCE ? " [(" + diceToPrint[0] + ", " + diceToPrint[1] + ")] " : " ") + "{\n");
+            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth)).append(NODES[currentNodeIndex]).append(NODES[currentNodeIndex] != Node.CHANCE ? " [(" + diceToPrint[0] + ", " + diceToPrint[1] + ")] " : " ").append("{\n");
 
         switch (NODES[currentNodeIndex]) {
-            case MAX:
+            case MAX -> {
                 try {
                     generatePossibleMoves();
                 } catch (BoardNotSpecifiedException ex) {
                     LOGGER.error(ex);
                 }
                 moves = this.getPossibleMoves();
-
                 if (!moves.isEmpty()) {
                     double[] moveQuality = new double[moves.size()];
 
                     for (int i = 0; i < moves.size(); i++) {
                         if (logExpectiminimaxTree)
-                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + moves.get(i) + " {\n");
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth)).append(moves.get(i)).append(" {\n");
                         make(moves.get(i));
                         moveQuality[i] = expectiminimax(depth - 1, (currentNodeIndex + 1) % 4);
                         unmake(moves.get(i));
                         if (logExpectiminimaxTree)
-                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [Move: " + moveQuality[i] + "]\n");
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth)).append("} [Move: ").append(moveQuality[i]).append("]\n");
                     }
 
                     if (depth == initialDepth) {
@@ -146,34 +145,33 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
                     if (depth == initialDepth) moveQuality = new double[0];
                     result = -0.9;
                 }
-                break;
-            case MIN:
+            }
+            case MIN -> {
                 try {
                     opponent.generatePossibleMoves();
                 } catch (BoardNotSpecifiedException ex) {
                     LOGGER.error(ex);
                 }
                 moves = opponent.getPossibleMoves();
-
                 if (!moves.isEmpty()) {
                     double[] moveQuality = new double[moves.size()];
 
                     for (int i = 0; i < moves.size(); i++) {
                         if (logExpectiminimaxTree)
-                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + moves.get(i) + " {\n");
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth)).append(moves.get(i)).append(" {\n");
                         opponent.make(moves.get(i));
                         moveQuality[i] = expectiminimax(depth - 1, (currentNodeIndex + 1) % 4);
                         opponent.unmake(moves.get(i));
                         if (logExpectiminimaxTree)
-                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [Move: " + moveQuality[i] + "]\n");
+                            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth)).append("} [Move: ").append(moveQuality[i]).append("]\n");
                     }
 
                     result = min(moveQuality);
                 } else {
                     result = 0.9;
                 }
-                break;
-            case CHANCE:
+            }
+            case CHANCE -> {
                 if (depth == 0) { // No further tree traversal, use heuristics
                     result = heuristicValue(currentNodeIndex - 1, depth);
                 } else {
@@ -197,9 +195,10 @@ public class ExpectiminimaxPlayer extends ComputerPlayer {
                     }
                     result = weightedAverage(values);
                 }
+            }
         }
         if (logExpectiminimaxTree)
-            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth) + "} [" + NODES[currentNodeIndex] + ":" + result + "]\n");
+            treeStringRepresentationBuilder.append("\t".repeat(initialDepth - depth)).append("} [").append(NODES[currentNodeIndex]).append(":").append(result).append("]\n");
 
         return result;
     }

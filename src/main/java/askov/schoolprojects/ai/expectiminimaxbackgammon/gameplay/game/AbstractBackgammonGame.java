@@ -122,9 +122,7 @@ public abstract class AbstractBackgammonGame {
         info.initModality(Modality.APPLICATION_MODAL);
         info.setHeaderText("End of the Turn");
         info.setContentText(content);
-        info.showAndWait().ifPresent(response -> {
-            updateGameState(GameAction.END_OF_TURN_CONFIRMED);
-        });
+        info.showAndWait().ifPresent(response -> updateGameState(GameAction.END_OF_TURN_CONFIRMED));
     }
 
     protected final void alertGameOverAndExit() {

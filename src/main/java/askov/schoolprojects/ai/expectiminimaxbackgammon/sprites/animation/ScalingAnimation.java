@@ -28,7 +28,7 @@ import javafx.util.Duration;
  */
 public class ScalingAnimation extends ShapeAnimation {
 
-    private ScaleTransition scaleTransition;
+    private final ScaleTransition scaleTransition;
 
     public ScalingAnimation(Shape shape) {
         super(shape);

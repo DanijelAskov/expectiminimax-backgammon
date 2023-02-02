@@ -57,14 +57,14 @@ public class BackgammonGame extends AbstractBackgammonGame {
     @Override
     public void updateGameState(GameAction gameAction) {
         switch (gameState) {
-            case WAITING_FOR_GAME_TO_START:
+            case WAITING_FOR_GAME_TO_START -> {
                 if (gameAction == GameAction.GAME_STARTED) {
                     gameState = GameState.WAITING_FOR_DICE_ROLL;
                     // System.out.println(currentPlayer.toString() + ": " + gameState);
                     updateGameState(GameAction.NULL);
                 }
-                break;
-            case WAITING_FOR_DICE_ROLL:
+            }
+            case WAITING_FOR_DICE_ROLL -> {
                 try {
                     currentPlayer.rollDice();
                     addAndShowDice(currentPlayer.getDice());
@@ -80,8 +80,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     Logger.getLogger(BackgammonGame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (currentPlayer instanceof HumanPlayer) {
-                    for (Checker checker : checkers)
-                    {
+                    for (Checker checker : checkers) {
                         checker.setOnMouseEntered(new ChangeCursorIconIfCheckerIsMovable(checker));
                         checker.setOnMouseClicked(new AnimateCheckerIfOnTopAndSelectable(checker));
                     }
@@ -118,7 +117,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
 
                                         board.update();
                                     });
-                                    Thread.sleep((long)(Die.TIME_TO_HIDE * 1000));
+                                    Thread.sleep((long) (Die.TIME_TO_HIDE * 1000));
                                     int finalCurrentRelocation = currentRelocation;
                                     Platform.runLater(() -> {
                                         relocation.getChecker().animateSelected(false);
@@ -149,9 +148,9 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     }
                 }
                 gameState = GameState.WAITING_FOR_FIRST_RELOCATION;
-                // System.out.println(currentPlayer.toString() + ": " + gameState);
-                break;
-            case WAITING_FOR_FIRST_RELOCATION:
+            }
+            // System.out.println(currentPlayer.toString() + ": " + gameState);
+            case WAITING_FOR_FIRST_RELOCATION -> {
                 if (gameAction == GameAction.FIRST_RELOCATION_DEFINED) {
                     try {
                         currentPlayer.generatePossibleMoves();
@@ -179,8 +178,8 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     }
                     // System.out.println(currentPlayer.toString() + ": " + gameState);
                 }
-                break;
-            case WAITING_FOR_SECOND_RELOCATION:
+            }
+            case WAITING_FOR_SECOND_RELOCATION -> {
                 if (gameAction == GameAction.SECOND_RELOCATION_DEFINED) {
                     removeDice(currentPlayer.getDice());
                     for (Die die : currentPlayer.getDice()) {
@@ -188,18 +187,20 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     }
                     if (getWinner() != null) {
                         for (Checker checker : checkers) {
-                            checker.setOnMouseEntered(e -> {});
-                            checker.setOnMouseClicked(e -> {});
+                            checker.setOnMouseEntered(e -> {
+                            });
+                            checker.setOnMouseClicked(e -> {
+                            });
                         }
                         for (int i = 1; i <= Board.NUM_POINTS; i++) {
                             try {
-                                board.getCheckerStack(Checker.CheckerColor.WHITE, i).setOnMouseClicked(e -> {});
+                                board.getCheckerStack(Checker.CheckerColor.WHITE, i).setOnMouseClicked(e -> {
+                                });
                             } catch (CheckerStackIndexOutOfBoundsException ex) {
                                 Logger.getLogger(ExpectiminimaxBackgammon.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                         alertGameOverAndExit();
-                        return;
                     } else {
                         switchCurrentPlayer();
                         gameState = GameState.WAITING_FOR_DICE_ROLL;
@@ -207,8 +208,8 @@ public class BackgammonGame extends AbstractBackgammonGame {
                         updateGameState(GameAction.NULL);
                     }
                 }
-                break;
-            case WAITING_END_OF_TURN_CONFIRMATION:
+            }
+            case WAITING_END_OF_TURN_CONFIRMATION -> {
                 if (gameAction == GameAction.END_OF_TURN_CONFIRMED) {
                     removeDice(currentPlayer.getDice());
                     for (Die die : currentPlayer.getDice()) {
@@ -216,18 +217,20 @@ public class BackgammonGame extends AbstractBackgammonGame {
                     }
                     if (getWinner() != null) {
                         for (Checker checker : checkers) {
-                            checker.setOnMouseEntered(e -> {});
-                            checker.setOnMouseClicked(e -> {});
+                            checker.setOnMouseEntered(e -> {
+                            });
+                            checker.setOnMouseClicked(e -> {
+                            });
                         }
                         for (int i = 1; i <= Board.NUM_POINTS; i++) {
                             try {
-                                board.getCheckerStack(Checker.CheckerColor.WHITE, i).setOnMouseClicked(e -> {});
+                                board.getCheckerStack(Checker.CheckerColor.WHITE, i).setOnMouseClicked(e -> {
+                                });
                             } catch (CheckerStackIndexOutOfBoundsException ex) {
                                 Logger.getLogger(ExpectiminimaxBackgammon.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                         alertGameOverAndExit();
-                        return;
                     } else {
                         switchCurrentPlayer();
                         gameState = GameState.WAITING_FOR_DICE_ROLL;
@@ -235,13 +238,13 @@ public class BackgammonGame extends AbstractBackgammonGame {
                         updateGameState(GameAction.NULL);
                     }
                 }
-                break;
+            }
         }
     }
 
     private class ChangeCursorIconIfCheckerIsMovable implements EventHandler<MouseEvent> {
 
-        private Checker checker;
+        private final Checker checker;
 
         public ChangeCursorIconIfCheckerIsMovable(Checker checker) {
             this.checker = checker;
@@ -271,7 +274,7 @@ public class BackgammonGame extends AbstractBackgammonGame {
 
     private class AnimateCheckerIfOnTopAndSelectable implements EventHandler<MouseEvent> {
 
-        private Checker checker;
+        private final Checker checker;
 
         public AnimateCheckerIfOnTopAndSelectable(Checker checker) {
             this.checker = checker;
@@ -340,15 +343,14 @@ public class BackgammonGame extends AbstractBackgammonGame {
                         }
                     }
                     prevDestinationCheckerStacks.clear();
-                    prevSourceCheckerStack = null;
                 } else {
                     pickedUpChecker = prevPickedUpChecker;
                     prevPickedUpChecker = null;
                     destinationCheckerStacks = prevDestinationCheckerStacks;
                     prevDestinationCheckerStacks = new ArrayList<>();
                     sourceCheckerStack = prevSourceCheckerStack;
-                    prevSourceCheckerStack = null;
                 }
+                prevSourceCheckerStack = null;
             } else {
                 prevPickedUpChecker = pickedUpChecker;
                 prevDestinationCheckerStacks = destinationCheckerStacks;

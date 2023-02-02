@@ -98,7 +98,6 @@ public abstract class Player {
     }
 
     private CheckerRelocation checkerRelocation1;
-    private CheckerRelocation checkerRelocation2;
 
     private void generateMoves() throws BoardNotSpecifiedException {
         if (board == null) {
@@ -111,6 +110,7 @@ public abstract class Player {
                 Checker sourceCheckerStackTopChecker;
                 CheckerStack destCheckerStack;
                 Checker destCheckerStackTopChecker;
+                CheckerRelocation checkerRelocation2;
                 if (barContainsCheckers) {
 
                     try {

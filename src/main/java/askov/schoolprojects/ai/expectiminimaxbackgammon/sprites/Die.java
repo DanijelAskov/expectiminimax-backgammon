@@ -70,7 +70,6 @@ public class Die extends Sprite {
     public static final double TIME_TO_SHOW = 1.5;
     public static final double TIME_TO_HIDE = 1.5;
 
-    private final Rectangle rectangle = new Rectangle();
     private final Circle[] dots = new Circle[9];
     
     private final double size;
@@ -79,6 +78,7 @@ public class Die extends Sprite {
     private boolean used;
     
     public Die(double size)  {
+        Rectangle rectangle = new Rectangle();
         rectangle.setWidth(this.size = size);
         rectangle.setHeight(size);
         rectangle.setArcHeight(size / 4);

@@ -52,13 +52,10 @@ public class Checker extends Sprite {
         }
         
         public static CheckerColor getOppositeCheckerColor(CheckerColor checkerColor) {
-            switch (checkerColor) {
-                case WHITE:
-                    return BLACK;
-                case BLACK:
-                    return WHITE;
-            }
-            return WHITE;
+            return switch (checkerColor) {
+                case WHITE -> BLACK;
+                case BLACK -> WHITE;
+            };
         }
         
         @Override
@@ -77,8 +74,8 @@ public class Checker extends Sprite {
 
     private final Shape crossedLinesMarker;
 
-    private Animation animationMarked;
-    private Animation animationSelected;
+    private final Animation animationMarked;
+    private final Animation animationSelected;
 
     public Checker(double size, CheckerColor checkerColor) {
         this.checkerColor = checkerColor;
@@ -120,7 +117,11 @@ public class Checker extends Sprite {
     }
 
     public void animateSelected(boolean selected) {
-        if (selected) animationSelected.start(); else animationSelected.stop();
+        if (selected) {
+            animationSelected.start();
+        } else {
+            animationSelected.stop();
+        }
     }
 
     public void animateBlot(boolean isBlot) {

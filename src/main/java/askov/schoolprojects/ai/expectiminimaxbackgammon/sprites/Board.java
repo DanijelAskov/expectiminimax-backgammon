@@ -37,9 +37,7 @@ public class Board extends Sprite {
     private static final double RELATIVE_SEPARATOR_WIDTH = 0.005;
     private static final double RELATIVE_SEPARATOR_HEIGHT = 0.95;
 
-    private final Rectangle background = new Rectangle();
     private final BoardSide leftSide, rightSide;
-    private final BoardSeparator boardSeparator;
     private final Home whiteHome, blackHome;
     private final Bar whiteBar, blackBar;
 
@@ -47,6 +45,7 @@ public class Board extends Sprite {
     private final double height;
 
     public Board(double width, double height) {
+        Rectangle background = new Rectangle();
         background.setWidth(this.width = width);
         background.setHeight(this.height = height);
         background.setFill(BOARD_FILL);
@@ -86,7 +85,7 @@ public class Board extends Sprite {
             super.getChildren().add(text);
         }
 
-        boardSeparator = new BoardSeparator(RELATIVE_SEPARATOR_WIDTH * width, RELATIVE_SEPARATOR_HEIGHT * height);
+        BoardSeparator boardSeparator = new BoardSeparator(RELATIVE_SEPARATOR_WIDTH * width, RELATIVE_SEPARATOR_HEIGHT * height);
         boardSeparator.setTranslateX(width / 2 - RELATIVE_SEPARATOR_WIDTH * width / 2);
         boardSeparator.setTranslateY((height - RELATIVE_SEPARATOR_HEIGHT * height) / 2);
         super.getChildren().add(boardSeparator);
@@ -113,23 +112,17 @@ public class Board extends Sprite {
     }
     
     public Bar getBar(Checker.CheckerColor color) {
-        switch (color) {
-            case WHITE:
-                return whiteBar;
-            case BLACK:
-                return blackBar;
-        }
-        return null;
+        return switch (color) {
+            case WHITE -> whiteBar;
+            case BLACK -> blackBar;
+        };
     }
     
     public Home getHome(Checker.CheckerColor color) {
-        switch (color) {
-            case WHITE:
-                return whiteHome;
-            case BLACK:
-                return blackHome;
-        }
-        return null;
+        return switch (color) {
+            case WHITE -> whiteHome;
+            case BLACK -> blackHome;
+        };
     }
     
     public double getWidth() {
@@ -145,7 +138,7 @@ public class Board extends Sprite {
             throw new CheckerStackIndexOutOfBoundsException();
         }
         switch (color) {
-            case WHITE:
+            case WHITE -> {
                 if (pointIndex <= NUM_POINTS / 4) {
                     return rightSide.pushChecker(color, pointIndex);
                 } else if (pointIndex >= 3 * NUM_POINTS / 4 + 1) {
@@ -153,7 +146,8 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.pushChecker(color, pointIndex - NUM_POINTS / 4);
                 }
-            case BLACK:
+            }
+            case BLACK -> {
                 if (pointIndex <= NUM_POINTS / 4) {
                     return rightSide.pushChecker(color, NUM_POINTS / 2 - pointIndex + 1);
                 } else if (pointIndex >= 3 * NUM_POINTS / 4 + 1) {
@@ -161,6 +155,7 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.pushChecker(color, 3 * NUM_POINTS / 4 - pointIndex + 1);
                 }
+            }
         }
         return null;
     }
@@ -170,7 +165,7 @@ public class Board extends Sprite {
             throw new CheckerStackIndexOutOfBoundsException();
         }
         switch (color) {
-            case WHITE:
+            case WHITE -> {
                 if (checkerStackIndex == 0) {
                     return whiteHome.peekChecker();
                 } else if (checkerStackIndex == NUM_POINTS + 1) {
@@ -182,7 +177,8 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.peekChecker(checkerStackIndex - NUM_POINTS / 4);
                 }
-            case BLACK:
+            }
+            case BLACK -> {
                 if (checkerStackIndex == 0) {
                     return blackHome.peekChecker();
                 } else if (checkerStackIndex == NUM_POINTS + 1) {
@@ -194,6 +190,7 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.peekChecker(3 * NUM_POINTS / 4 - checkerStackIndex + 1);
                 }
+            }
         }
         return null;
     }
@@ -203,7 +200,7 @@ public class Board extends Sprite {
             throw new CheckerStackIndexOutOfBoundsException();
         }
         switch (color) {
-            case WHITE:
+            case WHITE -> {
                 if (checkerStackIndex == NUM_POINTS + 1) {
                     return whiteBar.popChecker();
                 } else if (checkerStackIndex <= NUM_POINTS / 4) {
@@ -213,7 +210,8 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.popChecker(checkerStackIndex - NUM_POINTS / 4);
                 }
-            case BLACK:
+            }
+            case BLACK -> {
                 if (checkerStackIndex == NUM_POINTS + 1) {
                     return blackBar.popChecker();
                 } else if (checkerStackIndex <= NUM_POINTS / 4) {
@@ -223,6 +221,7 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.popChecker(3 * NUM_POINTS / 4 - checkerStackIndex + 1);
                 }
+            }
         }
         return null;
     }
@@ -232,7 +231,7 @@ public class Board extends Sprite {
             throw new CheckerStackIndexOutOfBoundsException();
         }
         switch (color) {
-            case WHITE:
+            case WHITE -> {
                 if (checkerStackIndex == 0) {
                     return whiteHome;
                 } else if (checkerStackIndex == NUM_POINTS + 1) {
@@ -244,7 +243,8 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.getPoint(checkerStackIndex - NUM_POINTS / 4);
                 }
-            case BLACK:
+            }
+            case BLACK -> {
                 if (checkerStackIndex == 0) {
                     return blackHome;
                 } else if (checkerStackIndex == NUM_POINTS + 1) {
@@ -256,6 +256,7 @@ public class Board extends Sprite {
                 } else {
                     return leftSide.getPoint(3 * NUM_POINTS / 4 - checkerStackIndex + 1);
                 }
+            }
         }
         return null;
     }

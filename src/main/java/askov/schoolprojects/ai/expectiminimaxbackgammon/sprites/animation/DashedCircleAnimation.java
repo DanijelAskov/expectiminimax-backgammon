@@ -36,7 +36,7 @@ public class DashedCircleAnimation extends SpriteAnimation {
     public enum RotateDirection {
         CLOCKWISE(1.), ANTICLOCKWISE(-1.);
 
-        private double multiplier;
+        private final double multiplier;
 
         RotateDirection(double multiplier) {
             this.multiplier = multiplier;
@@ -46,12 +46,12 @@ public class DashedCircleAnimation extends SpriteAnimation {
             return multiplier;
         }
 
-    };
+    }
 
     private static final int NUM_SEGMENTS = 2;
 
-    private Circle dashedCircle;
-    private ParallelTransition compositeAnimation;
+    private final Circle dashedCircle;
+    private final ParallelTransition compositeAnimation;
 
     public DashedCircleAnimation(Sprite sprite, double dashedCircleRadius, RotateDirection rotateDirection) {
         super(sprite);

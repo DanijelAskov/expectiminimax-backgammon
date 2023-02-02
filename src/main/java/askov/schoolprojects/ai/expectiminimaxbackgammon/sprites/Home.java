@@ -51,7 +51,7 @@ public class Home extends CheckerStack {
     private final double width, height;
     private final StackingDirection direction;
 
-    private Animation animationPotentialDestination;
+    private final Animation animationPotentialDestination;
 
     public Home(double width, double height, StackingDirection direction) {
         this.direction = direction;
@@ -66,7 +66,11 @@ public class Home extends CheckerStack {
 
     @Override
     public void animateSelected(boolean selected) {
-        if (selected) animationPotentialDestination.start(); else animationPotentialDestination.stop();
+        if (selected) {
+            animationPotentialDestination.start();
+        } else {
+            animationPotentialDestination.stop();
+        }
     }
 
     @Override

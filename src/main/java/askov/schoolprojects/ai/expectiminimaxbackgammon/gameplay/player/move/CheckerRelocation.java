@@ -103,12 +103,10 @@ public class CheckerRelocation {
             return true; 
         } 
         
-        if (!(object instanceof CheckerRelocation)) { 
+        if (!(object instanceof CheckerRelocation checkerRelocation)) {
             return false; 
-        } 
-          
-        CheckerRelocation checkerRelocation = (CheckerRelocation) object; 
-        
+        }
+
         return this.sourceCheckerStack == checkerRelocation.sourceCheckerStack && this.destinationCheckerStack == checkerRelocation.destinationCheckerStack && this.checker == checkerRelocation.checker;
     }
     

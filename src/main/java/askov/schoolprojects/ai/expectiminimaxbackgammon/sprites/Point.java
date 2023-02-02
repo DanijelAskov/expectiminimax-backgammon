@@ -48,7 +48,7 @@ public class Point extends CheckerStack {
     
     private static final int MAX_HEIGHT = 5;
 
-    private Animation animationPotentialDestination;
+    private final Animation animationPotentialDestination;
     
     public Point(double width, double height, PointColor color) {
         backgroundShape = new IsoscelesTriangle(width, height);
@@ -62,7 +62,11 @@ public class Point extends CheckerStack {
     
     @Override
     public void animateSelected(boolean selected) {
-        if (selected) animationPotentialDestination.start(); else animationPotentialDestination.stop();
+        if (selected) {
+            animationPotentialDestination.start();
+        } else {
+            animationPotentialDestination.stop();
+        }
     }
 
     @Override
